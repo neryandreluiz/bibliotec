@@ -1,11 +1,11 @@
 from django.shortcuts import render, render_to_response
-from .models import Livro
+from .models import Livro, Cliente, Reserva
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .serializers import LivroSerializer
+from .serializers import LivroSerializer, ClienteSerializer, ReservaSerializer
 
 
 # Create your views here.
@@ -50,7 +50,7 @@ class LivroDetails(APIView):
         serializer = LivroSerializer(livro, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -60,3 +60,72 @@ class LivroDetails(APIView):
             livro.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({"result": "O id informado não existe!"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class Clientes(APIView):
+
+    def get(self, request):
+
+        clientes = Cliente.objects.all()
+        id_cliente = self.request.query_params.get('pk', None)
+
+        if id_cliente:
+            clientes = Cliente.objects.filter(id_cliente=id_cliente)
+
+        serializer = ClienteSerializer(clientes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = ClienteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ClienteDetails(APIView):
+
+
+    def get(self, request, pk):
+        cliente = Cliente.objects.filter(id_cliente=pk)
+        serializer = ClienteSerializer(cliente, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def put(self, request, pk, format=None):
+        cliente = Cliente.objects.get(pk=pk)
+        serializer = ClienteSerializer(cliente, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request,pk):
+        cliente = Cliente.objects.filter(id_cliente=pk)
+        if cliente:
+            cliente.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"result": "O id informado não existe!"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class Reservas(APIView):
+
+    def get(self, request):
+
+        reservas = Reserva.objects.all()
+        id_reserva = self.request.query_params.get('pk', None)
+
+        if id_reserva:
+            reservas = Reserva.objects.filter(id_reserva=id_reserva)
+
+        serializer = ReservaSerializer(reservas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = ReservaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
