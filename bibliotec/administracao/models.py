@@ -35,5 +35,4 @@ class Reserva(models.Model):
     cliente = models.ForeignKey(Cliente)
     data_reserva = models.DateField("Data de Início", auto_now=True)
 
-    def __str__(self):
-        return "Reserva: {0} - {1} - {2}".format(self.id_reserva, self.livro, self.cliente)
+

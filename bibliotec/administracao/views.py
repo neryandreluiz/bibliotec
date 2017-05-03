@@ -112,15 +112,11 @@ class ClienteDetails(APIView):
 
 class Reservas(APIView):
 
-    def get(self, request):
+    def get(self, request, pk):
 
-        reservas = Reserva.objects.all()
-        id_reserva = self.request.query_params.get('pk', None)
+        reservas = Reserva.objects.filter(cliente=pk)
 
-        if id_reserva:
-            reservas = Reserva.objects.filter(id_reserva=id_reserva)
-
-        serializer = ReservaSerializer(reservas, many=True)
+        serializer = ReservaSerializer(reservas, context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):

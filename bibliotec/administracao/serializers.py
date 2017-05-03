@@ -17,8 +17,27 @@ class ClienteSerializer(serializers.ModelSerializer):
 
 
 class ReservaSerializer(serializers.ModelSerializer):
-    cliente = ClienteSerializer(many=False,read_only=True)
 
     class Meta:
         model = Reserva
-        fields = '__all__'
+        fields = ('cliente', 'livro', 'data_reserva')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   # cliente = serializers.HyperlinkedRelatedField(
+   #      many=False,
+   #      read_only=True,
+   #      view_name='cliente_detail'
+   #  )
