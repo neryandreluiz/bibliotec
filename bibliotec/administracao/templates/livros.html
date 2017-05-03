@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo Template Django</title>
+</head>
+<body>
+    <h1> Olá, essa é apenas uma página de demonstração! :)</h1>
+        <h2> O sistema de templates do Django é bastante flexível e permite </br> que você personalize suas páginas do jeito que preferir! </br>
+            Pode usar HTML, scripts, css...</h2>
+
+
+    --------- Lista de Livros---------</br>
+    {% csrf_token %}
+
+    {% for livro in livros %}
+
+    <strong> {{ livro.titulo }}</strong>
+    {% endfor %}
+
+</body>
+</html>
+
+

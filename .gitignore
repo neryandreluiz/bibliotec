@@ -1,0 +1,8 @@
+*.pyc
+__pycache__
+myvenv
+media
+db.sqlite3
+.DS_Store
+.idea
+uGet/administracao/migrations/
